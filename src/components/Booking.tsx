@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { Calendar, Clock, User, Scissors, Check } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, User, Scissors, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
+import { format } from "date-fns";
+import { ro } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 const stylists = [
   { id: "alberto", name: "Alberto Balan", specialty: "Frizerie" },
@@ -32,10 +37,10 @@ const timeSlots = [
 
 const Booking = () => {
   const [step, setStep] = useState(1);
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [formData, setFormData] = useState({
     service: "",
     stylist: "",
-    date: "",
     time: "",
     name: "",
     phone: "",
@@ -45,28 +50,25 @@ const Booking = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
-    if (!formData.service || !formData.stylist || !formData.date || !formData.time || !formData.name || !formData.phone || !formData.email) {
+    if (!formData.service || !formData.stylist || !date || !formData.time || !formData.name || !formData.phone || !formData.email) {
       toast.error("Te rugăm să completezi toate câmpurile!");
       return;
     }
 
-    // Show success message
     toast.success(
       "Rezervare trimisă cu succes! Vei primi un email de confirmare în curând.",
       { duration: 5000 }
     );
 
-    // Reset form
     setFormData({
       service: "",
       stylist: "",
-      date: "",
       time: "",
       name: "",
       phone: "",
       email: "",
     });
+    setDate(undefined);
     setStep(1);
   };
 
@@ -189,19 +191,36 @@ const Booking = () => {
             {/* Step 2: Date & Time */}
             {step === 2 && (
               <div className="space-y-8 animate-fade-in">
-                {/* Date Selection */}
+                {/* Date Selection with Calendar */}
                 <div>
                   <label className="flex items-center gap-2 text-foreground font-medium mb-4">
-                    <Calendar className="w-5 h-5 text-primary" />
+                    <CalendarIcon className="w-5 h-5 text-primary" />
                     Alege Data
                   </label>
-                  <input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    min={new Date().toISOString().split("T")[0]}
-                    className="w-full p-4 rounded-lg border border-border bg-card text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal h-14 border-border bg-card hover:bg-card hover:border-primary/50",
+                          !date && "text-foreground/40"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
+                        {date ? format(date, "PPP", { locale: ro }) : "Selectează data"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-card border-border" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        disabled={(date) => date < new Date() || date.getDay() === 0}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Time Selection */}
@@ -243,8 +262,8 @@ const Booking = () => {
                     variant="gold"
                     size="lg"
                     className="flex-1"
-                    onClick={() => formData.date && formData.time && setStep(3)}
-                    disabled={!formData.date || !formData.time}
+                    onClick={() => date && formData.time && setStep(3)}
+                    disabled={!date || !formData.time}
                   >
                     Continuă
                   </Button>
@@ -273,7 +292,9 @@ const Booking = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-foreground/60">Data:</span>
-                      <span className="text-foreground font-medium">{formData.date}</span>
+                      <span className="text-foreground font-medium">
+                        {date ? format(date, "PPP", { locale: ro }) : ""}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-foreground/60">Ora:</span>
