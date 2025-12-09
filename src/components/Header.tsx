@@ -7,6 +7,7 @@ const navItems = [
   { label: "Acasă", href: "#home" },
   { label: "Servicii", href: "#services" },
   { label: "Echipa", href: "#team" },
+  { label: "Academia", href: "#academy" },
   { label: "Rezervare", href: "#booking" },
   { label: "Contact", href: "#contact" },
 ];
@@ -58,7 +59,13 @@ const Header = () => {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button variant="gold" size="lg" asChild>
-              <a href="#booking">Rezervă Acum</a>
+              <a
+                href="https://mero.ro/p/alberto-balan-concept"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Rezervă Acum
+              </a>
             </Button>
           </div>
 
@@ -87,7 +94,12 @@ const Header = () => {
                 </a>
               ))}
               <Button variant="gold" size="lg" className="mt-2" asChild>
-                <a href="#booking" onClick={() => setIsMobileMenuOpen(false)}>
+                <a
+                  href="https://mero.ro/p/alberto-balan-concept"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Rezervă Acum
                 </a>
               </Button>
