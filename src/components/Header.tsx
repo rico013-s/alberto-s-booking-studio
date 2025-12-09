@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo.svg";
 
 const navItems = [
   { label: "Acasă", href: "#home" },
   { label: "Servicii", href: "#services" },
   { label: "Echipa", href: "#team" },
   { label: "Academia", href: "#academy" },
-  { label: "Rezervare", href: "#booking" },
+  { label: "Magazin", href: "#shop" },
   { label: "Contact", href: "#contact" },
 ];
 
