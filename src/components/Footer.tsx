@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo.svg";
 import { Instagram, Facebook, MapPin, Phone, Mail } from "lucide-react";
 
 const TikTokIcon = () => (
@@ -63,8 +63,8 @@ const Footer = () => {
               <a href="#team" className="text-foreground/60 hover:text-primary transition-colors text-sm">
                 Echipa
               </a>
-              <a href="#booking" className="text-foreground/60 hover:text-primary transition-colors text-sm">
-                Rezervare
+              <a href="#shop" className="text-foreground/60 hover:text-primary transition-colors text-sm">
+                Magazin
               </a>
               <a href="#contact" className="text-foreground/60 hover:text-primary transition-colors text-sm">
                 Contact
